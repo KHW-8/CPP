@@ -70,7 +70,6 @@ void receive_packet(serial::Serial& serial) {
         if (!msg.empty()) {
             std::osyncstream(std::cout) << "Received: " << msg.size() << std::endl;
             std::osyncstream(std::cout) << msg << std::endl;
-            std::cout.flush();
 
             // for (auto &c : msg) 
             //     std::osyncstream(std::cout) << std::showbase << std::hex << static_cast<int>(c) << " ";
