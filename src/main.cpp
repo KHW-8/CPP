@@ -16,30 +16,6 @@ enum class Peripheral {
     LED,
 };
 
-void list_ports() {
-    auto devices = serial::list_ports();
-    for (const auto& device : devices) {
-        std::osyncstream(std::cout) << device.port.c_str() << " | "
-                << device.description.c_str() << " | "
-                << device.hardware_id.c_str()
-                << std::endl;
-    }
-}
-
-void receive_packet(serial::Serial& serial) {
-    while (true) {
-        auto msg = serial.read(200);
-        if (!msg.empty()) {
-            std::osyncstream(std::cout) << "Received: " << msg.size() << std::endl;
-            std::osyncstream(std::cout) << msg << std::endl;
-
-            // for (auto &c : msg) 
-            //     std::osyncstream(std::cout) << std::showbase << std::hex << static_cast<int>(c) << " ";
-            // std::osyncstream(std::cout) << std::endl;
-        }
-    }
-}
-
 std::vector<uint8_t> query_servos_angle{
     0x55, // Header
     0x55, 
@@ -76,26 +52,37 @@ std::vector<uint8_t> beep{
     static_cast<uint8_t>(Peripheral::BUZZER)
 };
 
+void list_ports() {
+    auto devices = serial::list_ports();
+    for (const auto& device : devices) {
+        std::osyncstream(std::cout) << device.port.c_str() << " | "
+                << device.description.c_str() << " | "
+                << device.hardware_id.c_str()
+                << std::endl;
+    }
+}
+
+void receive_packet(serial::Serial& serial) {
+    while (true) {
+        auto msg = serial.readline(100, "\r\n");
+        if (!msg.empty()) {
+            std::osyncstream(std::cout) << "Received: " << msg.size() << std::endl;
+            std::osyncstream(std::cout) << msg << std::endl;
+            std::cout.flush();
+
+            // for (auto &c : msg) 
+            //     std::osyncstream(std::cout) << std::showbase << std::hex << static_cast<int>(c) << " ";
+            // std::osyncstream(std::cout) << std::endl;
+        }
+    }
+}
+
 int main() {
-    // std::vector<uint8_t> v{0x00, 0x00, 0x03, 0xE8};
-
-    // uint32_t u = 0;
-
-    // std::print("Before: {}\n", u);
-
-    // for (size_t i = 0; i < v.size(); i++) {
-    //     uint8_t offset = (8 * (3- i));
-    //     std::print("offset: {}\n", offset);
-    //     u |= v[i] << offset;
-    // }
-
-    // std::print("After: {}\n", u);
-
     serial::Serial serial = serial::Serial("", 115200, serial::Timeout::simpleTimeout(1000));
 
     // Set serial port and open
     try {
-        serial.setPort("COM3");
+        serial.setPort("/dev/ttyUSB0");
         serial.open();
     } catch (const serial::IOException& e) {
         std::cerr << e.what() << std::endl;
@@ -108,8 +95,8 @@ int main() {
     std::thread rx_th(receive_packet, std::ref(serial));
     
     // Sending msg
-    std::osyncstream(std::cout) << "Start to post..." << std::endl;
-    serial.write(blink_led);
+    // std::osyncstream(std::cout) << "Start to post..." << std::endl;
+    // serial.write(blink_led);
 
     rx_th.join();
 
