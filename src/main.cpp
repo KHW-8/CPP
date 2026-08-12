@@ -66,28 +66,21 @@ void receive_packet(serial::Serial& serial) {
     std::osyncstream(std::cout) << "Start to receive" << std::endl;
 
     while (true) {
-        auto msg = serial.readline(100, "\r\n");
+        auto msg = serial.readline(100);
         if (!msg.empty()) {
             std::osyncstream(std::cout) << "Received: " << msg.size() << std::endl;
             std::osyncstream(std::cout) << msg << std::endl;
-
-            // for (auto &c : msg) 
-            //     std::osyncstream(std::cout) << std::showbase << std::hex << static_cast<int>(c) << " ";
-            // std::osyncstream(std::cout) << std::endl;
         }
     }
 }
 
 int main() {
     serial::Serial serial = serial::Serial("", 115200, serial::Timeout::simpleTimeout(1000));
-    serial.setBytesize(serial::eightbits);
-    serial.setParity(serial::parity_none);
-    serial.setStopbits(serial::stopbits_one);
 
     // Set serial port and open
     try {
-        // serial.setPort("/dev/ttyUSB0");
-        serial.setPort("COM3");
+        serial.setPort("/dev/ttyUSB0");
+        // serial.setPort("COM3");
         serial.open();
     } catch (const serial::IOException& e) {
         std::cerr << e.what() << std::endl;
