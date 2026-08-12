@@ -72,10 +72,34 @@ void receive_packet(serial::Serial& serial) {
             std::osyncstream(std::cout) << msg << std::endl;
         }
     }
+
+    // std::string buffer;
+
+    // while (true) {
+    //     auto data = serial.read(1);
+
+    //     if (!data.empty()) {
+    //         buffer += data;
+
+    //         if (data[0] == '\n') {
+    //             std::osyncstream(std::cout)
+    //                 << "Received: "
+    //                 << buffer.size()
+    //                 << " [" << buffer << "]"
+    //                 << std::endl;
+
+    //             buffer.clear();
+    //         }
+    //     }
+    // }
 }
 
 int main() {
     serial::Serial serial = serial::Serial("", 115200, serial::Timeout::simpleTimeout(1000));
+    serial.setBytesize(serial::eightbits);
+    serial.setParity(serial::parity_none);
+    serial.setStopbits(serial::stopbits_one);
+    serial.setFlowcontrol(serial::flowcontrol_none);
 
     // Set serial port and open
     try {
