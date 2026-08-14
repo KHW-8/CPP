@@ -63,8 +63,6 @@ void list_ports() {
 }
 
 void receive_packet(serial::Serial& serial) {
-    std::osyncstream(std::cout) << "Start to receive" << std::endl;
-
     while (true) {
         auto msg = serial.readline();
         if (!msg.empty()) 
@@ -95,8 +93,8 @@ int main() {
     std::thread rx_th(receive_packet, std::ref(serial));
     
     // Sending msg
-    // std::osyncstream(std::cout) << "Start to post..." << std::endl;
-    // serial.write(blink_led);
+    std::osyncstream(std::cout) << "Start to post..." << std::endl;
+    serial.write(blink_led);
 
     rx_th.join();
 
