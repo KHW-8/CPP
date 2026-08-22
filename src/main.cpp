@@ -1,18 +1,11 @@
-#include <print>
+#include <cstdint>
+#include <vector>
 
-auto main() -> int {
-    float f1 = 0.5;
+#include "serial/serial.h"
 
-    uint8_t arr[4] = {};
-
-    std::memcpy(arr, &f1, sizeof(float));
-
-    for (auto i = 0; i < 4; i++)
-        std::print("{}\n", arr[i]);
-
-    float f2 = (float)*(float*)arr;
-
-    std::print("{}\n", f2);
-
-    return 0;
+int main() {
+    std::vector<uint8_t> v{
+        0,
+        2
+    };
 }
