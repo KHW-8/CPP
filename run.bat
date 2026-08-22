@@ -1,3 +1,3 @@
-cd build/build
+cd build/build/Release
 call generators/conanrun.bat
-.\Release\Demo.exe
+.\Demo.exe
