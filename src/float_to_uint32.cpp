@@ -26,6 +26,8 @@ int main() {
     }
     std::cout << "\n";
 
+    arr = { 0, 0, 0x80, 0x3f };
+
     // Reassemble
     float reassembled = bytesToFloat(arr);
     std::cout << std::dec << "Reassembled: " << reassembled << "\n";

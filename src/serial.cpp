@@ -20,15 +20,25 @@ std::vector<uint8_t> query_servos_angle{
     0x55, // Header
     0x55, 
     static_cast<uint8_t>(Peripheral::BUS_SERVO), // Peripheral
-    0x04, // Data Length
+    0x03, // Data Length
     0x1C, // Command
-    0x06, // Servo Count
+    0x01, // Servo count
     0x01, // Servos Id
-    0x02,
-    0x03,
-    0x04,
-    0x05,
-    0x06
+};
+
+std::vector<uint8_t> set_servos_angle{
+    0x55, // Header
+    0x55, 
+    static_cast<uint8_t>(Peripheral::BUS_SERVO), // Peripheral
+    0x8, // Data Length
+    0x1, // Command
+    0x1, // Servo Count
+    0x4, // Servo Id
+    0x96, // Angle
+    0x00, // Duration
+    0x00,
+    0x80, 
+    0x3f, 
 };
 
 std::vector<uint8_t> blink_led{
@@ -38,14 +48,14 @@ std::vector<uint8_t> blink_led{
     0x0C, // Data Length
     0x01, // LED Count
     0x00, // LED Id
-    0xE8, // On
-    0x03,
+    0x00, // On
     0x00,
+    0x80, 
+    0x3f,
+    0x00, // Off
     0x00,
-    0xE8, // Off
-    0x03,
-    0x00,
-    0x00,
+    0x80, 
+    0x3f,
     0x05, // Repeat Count
     0x00,
 };
@@ -117,7 +127,7 @@ int main() {
     
     // Sending msg
     std::cout << "Start to post..." << std::endl;
-    serial.write(query_servos_angle);
+    serial.write(set_servos_angle);
 
     rx_th.join();
 
