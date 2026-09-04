@@ -4,8 +4,7 @@ arch=x86_64
 build_type=Release
 compiler=clang
 compiler.version=22
-compiler.cppstd=gnu23
-compiler.libcxx=libstdc++
+compiler.cppstd=23
 
 [conf]
 tools.build:compiler_executables={"c": "clang", "cpp": "clang++"}

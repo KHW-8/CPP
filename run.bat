@@ -1,3 +1,3 @@
 cd build/build/Release
 call generators/conanrun.bat
-.\Demo.exe
+.\Demo.exe HandOutdoorColor.jpg
