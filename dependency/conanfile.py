@@ -27,10 +27,5 @@ class Dependency(ConanFile):
         cmake_layout(self)
 
     def requirements(self):
-        self.requires("boost/1.91.0")
-        self.requires("gtest/1.17.0")
         self.requires("opencv/4.14.0")
-        self.requires("qt/6.11.1")
-        self.requires("eigen/5.0.1", override=True)
-        self.requires("symengine/0.14.0")
         
